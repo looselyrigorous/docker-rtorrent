@@ -1,0 +1,28 @@
+version: "3"
+services:
+  rtorrent:
+    image: 
+    volumes:
+      - "./downloads:/downloads"
+      - "./session:/session"
+      - "./watch:/watch"
+      - "./config:/config"
+      - "rtorrent-sock:/socket"
+    ports:
+      - "49161:49161"
+      - "49161:49161/udp"
+    environment:
+      - PUID=1000
+      - PGID=1000
+    tty: true
+    stdin_open: true
+  flood:
+    image: penx/flood
+    volumes:
+      - "rtorrent-sock:/data"
+    ports:
+      - "3000:3000"
+    environment:
+      - "RTORRENT_SOCK=true"
+volumes:
+  rtorrent-sock: {}

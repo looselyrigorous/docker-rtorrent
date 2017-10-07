@@ -1,0 +1,16 @@
+#!/bin/sh
+PUID=${PUID:=1000}
+PGID=${PGID:=1000}
+
+# Copy over default config if none is provided
+if [ ! -f "/config/.rtorrent.rc" ]; then
+	cp /dist/.rtorrent.rc.dist /config/.rtorrent.rc
+	exit 0
+fi
+
+# chown rTorrent specific directories
+chown -R "$PUID:$PGID" /config /session /watch /socket
+# chown rtorrent's tty so it can write to it
+chown "$PUID:tty" /dev/pts/0
+
+exec su-exec $PUID:$PGID rtorrent -n -o import=/config/.rtorrent.rc 2>&1 1>/dev/null
