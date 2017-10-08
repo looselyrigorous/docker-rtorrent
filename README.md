@@ -1,5 +1,5 @@
 # rTorrent on Alpine
-This is a bare-bones docker container for rTorrent.  The GUI output <sup id="a1">[1](#f1)</sup> is locked out, instead a unix socket is exposed for you to use with a plain webserver, [ruTorrent](https://github.com/Novik/ruTorrent)/[Flood](https://github.com/jfurrow/flood) or what have you.
+This is a bare-bones docker container for rTorrent.  The GUI output is locked out, instead a unix socket is exposed for you to use with a plain webserver, [ruTorrent](https://github.com/Novik/ruTorrent)/[Flood](https://github.com/jfurrow/flood) or what have you.
 
 ## Configuration
 
@@ -66,5 +66,3 @@ Before attempting to launch the container, you should make sure that the volumes
 ## Ports
 
 The container exposes 49160/udp for DHT and 49161/{tcp,udp} for incoming connections. DHT is disabled by default but it's fairly trivial to enable it.  The XMLRPC port is **not** enabled on rTorrent and therefore not exposed. This is a bad idea *anyway* cause it doesn't support any kind of authentication. You can instead forward requests to the socket through an nginx proxy with digest authentication.
-
-<b id="f1">1</b> You can still attach to the container and C-q to exit though. So just don't, mkay? [↩](#a1)
