@@ -20,9 +20,6 @@ RUN apk add --no-cache \
 
 VOLUME ["/config", "/session", "/socket", "/watch", "/downloads"]
 
-# Ports for DHT, incoming connections
-EXPOSE 49160/udp 49161/tcp 49161/udp
-
 # Copy distribution rTorrent config for bootstrapping and entrypoint
 COPY ./root /
 
