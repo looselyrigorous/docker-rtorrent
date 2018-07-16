@@ -47,13 +47,13 @@ volumes:
   rtorrent-sock: {}
 ```
 
-Save it as `docker-compose.yml` . Now all you have to do is `docker-compose up -d` and you're off to the races. There will be(?) compose files in the compose directory for more complete setups.
+Save it as `docker-compose.yml` . Now all you have to do is `docker-compose up -d` and you're off to the races. There are docker-compose files in the compose directory for more complete setups.
 
 ## Volumes
 
 | Volume     | Explanation                              |
 | ---------- | ---------------------------------------- |
-| /downloads | Your downloads. Duh.                     |
+| /downloads | Your downloads.                          |
 | /session   | rTorrent specific folder. Used for persistence accross restarts |
 | /watch     | Watch folder for .torrent files          |
 | /config    | rTorrent configuration                   |
