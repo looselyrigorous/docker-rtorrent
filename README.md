@@ -3,7 +3,7 @@ This is a bare-bones docker container for rTorrent.  The GUI output is locked ou
 
 ## Configuration
 
-The container creates a "sane defaults" configuration that is tailored to the technicalities of docker (and this specific container). You are encouraged (but not required) to use it. You can bootstrap it to a config volume by running the container like so:  `docker run --rm -v "./config:/config" looselyrigorous/rtorrent`
+The container creates a "sane defaults" configuration that is tailored to the technicalities of docker (and this specific container). You are encouraged (but not required) to use it. You can bootstrap it to a config volume by running the container like so:  `docker run --rm -v "$(pwd)/config:/config" looselyrigorous/rtorrent`
 
 ## Running
 
@@ -18,8 +18,8 @@ docker run -itd \
 	-v rtorrent-sock:/socket \
 	-p 49161:49161 \
 	-p 49161:49161/udp \
-	-e PUID=1000 -e PGUID=1000 \
-	looselyrigorous/rtorrent
+	-e PUID=1000 -e PGID=1000 \
+	looselyrigorous/rtorrent:0.2
 ```
 
 Look like a pain in the ass to paste and edit? Well that's because **it is**. Just use a compose file:
@@ -28,7 +28,7 @@ Look like a pain in the ass to paste and edit? Well that's because **it is**. Ju
 version: "3"
 services:
   rtorrent:
-    image: looselyrigorous/rtorrent
+    image: looselyrigorous/rtorrent:0.2
     volumes:
       - "./downloads:/downloads"
       - "./session:/session"
@@ -41,8 +41,6 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-    tty: true
-    stdin_open: true
 volumes:
   rtorrent-sock: {}
 ```
@@ -61,7 +59,7 @@ Save it as `docker-compose.yml` . Now all you have to do is `docker-compose up -
 
 ## Environment Variables
 
-Before attempting to launch the container, you should make sure that the volumes you mount are owned by the same UID/GID's you provide as env vars. The container will chown all dirs except /downloads. So just chown your Downloads folder, then set PUID and GUID accordingly, and it just works™.
+Before attempting to launch the container, you should make sure that the volumes you mount are owned by the same UID/GID's you provide as env vars. The container will chown all dirs except /downloads. So just chown your Downloads folder, then set PUID and PGID accordingly, and it just works™.
 
 ## Ports
 
