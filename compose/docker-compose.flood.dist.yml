@@ -1,7 +1,7 @@
 version: "3"
 services:
   rtorrent:
-    image:
+    image: looselyrigorous/rtorrent:0.2
     volumes:
       - "./downloads:/downloads"
       - "./session:/session"
@@ -15,7 +15,10 @@ services:
       - PUID=1000
       - PGID=1000
   flood:
-    image: penx/flood
+    # You should build the flood image yourself,
+    # as there is no official Docker Hub build.
+    # https://github.com/jfurrow/flood/wiki/Docker
+    build: ./flood-build
     volumes:
       - "rtorrent-sock:/data"
     ports:
