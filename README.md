@@ -28,7 +28,7 @@ Look like a pain in the ass to paste and edit? Well that's because **it is**. Ju
 version: "3"
 services:
   rtorrent:
-    image: looselyrigorous/rtorrent:0.2
+    image: looselyrigorous/rtorrent:0.3
     volumes:
       - "./downloads:/downloads"
       - "./session:/session"
