@@ -23,4 +23,6 @@ VOLUME ["/config", "/session", "/socket", "/watch", "/downloads"]
 # Copy distribution rTorrent config for bootstrapping and entrypoint
 COPY ./root /
 
-CMD ["/init"]
+ENTRYPOINT ["/entrypoint"]
+
+CMD ["rtorrent", "-n", "-o", "import=/config/.rtorrent.rc"]

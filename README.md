@@ -3,7 +3,7 @@ This is a bare-bones docker container for rTorrent.  The GUI output is locked ou
 
 ## Configuration
 
-The container creates a "sane defaults" configuration that is tailored to the technicalities of docker (and this specific container). You are encouraged (but not required) to use it. You can bootstrap it to a config volume by running the container like so:  `docker run --rm -v "$(pwd)/config:/config" looselyrigorous/rtorrent`
+The container creates a "sane defaults" configuration that is tailored to the technicalities of docker (and this specific container). You are encouraged (but not required) to use it. You can bootstrap it to a config volume by running the container like so:  `docker run --rm -v "$(pwd)/config:/config" looselyrigorous/rtorrent bootstrap`
 
 ## Running
 
