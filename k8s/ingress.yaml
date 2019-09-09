@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    # TODO: possibly replace issuer
+    certmanager.k8s.io/cluster-issuer: selfsigning-issuer
+  name: flood
+  namespace: torrent
+spec:
+  rules:
+    # TODO: replace host with your actual hostname
+  - host: torrent.myhost.com
+    http:
+      paths:
+      - backend:
+          serviceName: flood
+          servicePort: 80
+        path: /
+  tls:
+  - hosts:
+    - torrent.myhost.com
+    secretName: flood-tls
