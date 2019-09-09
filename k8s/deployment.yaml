@@ -22,10 +22,6 @@ spec:
       containers:
         - name: flood
           image: sillywhale/flood:latest
-          # the original command provided by the dockerfile of the
-          # image uses "npm run start:production", which seems to be
-          # deprecated. See https://github.com/SillyWhale/rtorrent_flood/pull/4
-          command: ["npm", "run", "start"]
           ports:
             - name: flood-http
               containerPort: 3000
