@@ -1,0 +1,104 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: rtorrent-flood
+  namespace: torrent
+  labels:
+    app: rtorrent-flood
+spec:
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  # TODO: for replicas > 1, use volumes that support it
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rtorrent-flood
+  template:
+    metadata:
+      labels:
+        app: rtorrent-flood
+    spec:
+      containers:
+        - name: flood
+          image: sillywhale/flood:latest
+          # the original command provided by the dockerfile of the
+          # image uses "npm run start:production", which seems to be
+          # deprecated. See https://github.com/SillyWhale/rtorrent_flood/pull/4
+          command: ["npm", "run", "start"]
+          ports:
+            - name: flood-http
+              containerPort: 3000
+          volumeMounts:
+            - name: socket
+              # Socket will thus be at /socket/rtorrent.sock
+              mountPath: /socket
+            - name: db
+              mountPath: /data/server/db
+          env:
+            - name: FLOOD_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: flood
+                  key: secret
+          resources:
+            limits:
+              cpu: 50m
+              memory: 250Mi
+            requests:
+              cpu: 10m
+              memory: 100Mi
+          livenessProbe:
+            httpGet:
+              port: http
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+        - name: rtorrent
+          image: looselyrigorous/rtorrent:latest
+          tty: true
+          ports:
+            - name: rtorrent
+              containerPort: 49161
+          volumeMounts:
+            - name: downloads
+              mountPath: /downloads
+            - name: socket
+              mountPath: /socket
+            - name: session
+              mountPath: /session
+          resources:
+            requests:
+              cpu: 50m
+              memory: 50Mi
+            limits:
+              cpu: 1000m
+              memory: 1Gi
+          livenessProbe:
+            exec:
+              command: ["test", "/socket/rtorrent.sock"]
+          readinessProbe:
+            tcpSocket:
+              port: rtorrent
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+      volumes:
+        # share the socket between flood and rtorrent
+        - name: socket
+          emptyDir: {}
+        # TODO: adjust the volumes accordingly to support
+        # multiple replicas and multiple nodes.
+        - name: downloads
+          hostPath:
+            path: /mnt/data/rtorrent/downloads/
+            type: Directory
+        - name: session
+          hostPath:
+            path: /mnt/data/rtorrent/session/
+            type: Directory
+        - name: db
+          hostPath:
+            path: /mnt/data/flood/
+            type: Directory
