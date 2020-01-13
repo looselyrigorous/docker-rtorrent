@@ -1,7 +1,7 @@
 version: "3"
 services:
   rtorrent:
-    image: looselyrigorous/rtorrent:0.2
+    image: looselyrigorous/rtorrent:0.3.2
     volumes:
       - "./downloads:/downloads"
       - "./session:/session"

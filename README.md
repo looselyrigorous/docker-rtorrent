@@ -19,7 +19,7 @@ docker run -itd \
 	-p 49161:49161 \
 	-p 49161:49161/udp \
 	-e PUID=1000 -e PGID=1000 \
-	looselyrigorous/rtorrent:0.2
+	looselyrigorous/rtorrent:0.3.2
 ```
 
 Look like a pain in the ass to paste and edit? Well that's because **it is**. Just use a compose file:
@@ -28,7 +28,7 @@ Look like a pain in the ass to paste and edit? Well that's because **it is**. Ju
 version: "3"
 services:
   rtorrent:
-    image: looselyrigorous/rtorrent:0.3
+    image: looselyrigorous/rtorrent:0.3.2
     volumes:
       - "./downloads:/downloads"
       - "./session:/session"
